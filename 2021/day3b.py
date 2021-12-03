@@ -1,5 +1,3 @@
-from Day3bNode import Node
-
 """
 --- Part Two ---
 Next, you should verify the life support rating, which can be determined by multiplying the oxygen generator rating by the CO2 scrubber rating.
