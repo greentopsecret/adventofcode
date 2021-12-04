@@ -39,7 +39,7 @@ def find_line_by_min_recursively(lines):
     return find_line_recursively(lines, 'min', 0)
 
 
-def find_line_recursively(lines, comparison: str, pos: int = 0):
+def find_line_recursively(lines, comparison: str, pos: int):
     if len(lines) == 0:
         return ''
 
