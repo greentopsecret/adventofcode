@@ -74,4 +74,4 @@ class Day3A:
 
 
 if __name__ == '__main__':
-    print('Result for the part 1: %s' % Day3A.get_result('data/day3a.txt'))
+    print('Result for the part 1: %s' % Day3A.get_result('data/day3.txt'))

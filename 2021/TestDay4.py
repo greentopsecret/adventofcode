@@ -2,11 +2,9 @@ import unittest
 from unittest.mock import mock_open
 from unittest.mock import patch
 from day4 import Day4 as TaskA
-from day3b import Day3B as TaskB
+from parameterized import parameterized, parameterized_class
 
-
-class TestDay4(unittest.TestCase):
-    input = """7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
+INPUT = """7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
 
 22 13 17 11  0
  8  2 23  4 24
@@ -26,16 +24,25 @@ class TestDay4(unittest.TestCase):
 22 11 13  6  5
  2  0 12  3  7"""
 
-    def test_a_get_result(self):
+
+class TestDay4(unittest.TestCase):
+
+    @parameterized.expand([
+        (INPUT, 4512),
+    ])
+    def test_a_get_result(self, _input, expected_result):
         file = 'file/path/mock'
-        with patch('builtins.open', mock_open(read_data=self.input)):
+        with patch('builtins.open', mock_open(read_data=_input)):
             r = TaskA.task1(file)
 
-        self.assertEqual(4512, r)
+        self.assertEqual(expected_result, r)
 
-    def test_b_get_result(self):
+    @parameterized.expand([
+        (INPUT, 1924),
+    ])
+    def test_b_get_result(self, _input, expected_result):
         file = 'file/path/mock'
-        with patch('builtins.open', mock_open(read_data=self.input)):
+        with patch('builtins.open', mock_open(read_data=_input)):
             r = TaskA.task2(file)
 
-        self.assertEqual(1924, r)
+        self.assertEqual(expected_result, r)

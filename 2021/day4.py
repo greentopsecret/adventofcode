@@ -66,39 +66,30 @@ In the above example, the second board is the last to win, which happens after 1
 
 Figure out which board will win last. Once it wins, what would its final score be?
 """
-from typing import List, Any
 
 
 class Board:
     bingo: bool
-    lines: list[list[int]]
+    matrix: np.array
 
     def __init__(self, matrix: np.array):
         self.bingo = False
-        self.lines = []
-        for i in range(0, len(matrix)):
-            self.lines.append(matrix[i])
-            self.lines.append(matrix[:, i])
+        self.matrix = matrix
 
     def mark_number(self, number: int) -> None:
-        for i in range(len(self.lines)):
-            line = self.lines[i]
-            line = np.delete(line, np.where(line == number))
-            self.lines[i] = line
-            if not len(line):
+        w = np.where(self.matrix == number)
+        if len(w[0]):
+            i = w[0][0]
+            j = w[1][0]
+            self.matrix[i][j] = 0
+            if self.matrix[i].sum() == 0 or self.matrix[:, j].sum() == 0:
                 self.bingo = True
 
     def bingo(self) -> bool:
         return self.bingo
 
     def score(self, number: int) -> int:
-        numbers = []
-        for i in range(0, len(self.lines)):
-            numbers = numbers + self.lines[i].tolist()
-
-        _sum = sum({numbers[i]: True for i in range(0, len(numbers))}.keys())
-
-        return _sum * number
+        return self.matrix.sum() * number
 
 
 class Day4:
