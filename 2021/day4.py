@@ -1,5 +1,4 @@
 import numpy as np
-from numpy import ndarray
 
 """
 --- Day 4: Giant Squid ---
@@ -94,55 +93,49 @@ class Board:
 
 class Day4:
     @staticmethod
-    def task1(file):
-        with open(file, 'r') as f:
-            numbers, boards = Day4.convert_to_numbers_and_boards(f.read())
-
-            for j in range(0, len(numbers)):
-                number = numbers[j]
-                for i in range(0, len(boards)):
-                    board = boards[i]
-                    board.mark_number(number)
-                    if board.bingo:
-                        return board.score(number)
+    def task1(d):
+        numbers, boards = Day4._convert_to_numbers_and_boards(d)
+        for j in range(0, len(numbers)):
+            number = numbers[j]
+            for i in range(0, len(boards)):
+                board = boards[i]
+                board.mark_number(number)
+                if board.bingo:
+                    return board.score(number)
 
     @staticmethod
-    def task2(file):
-        with open(file, 'r') as f:
+    def task2(d):
+        boards: np.array[Board]
+        numbers, boards = Day4._convert_to_numbers_and_boards(d)
 
-            boards: np.array[Board]
-            numbers, boards = Day4.convert_to_numbers_and_boards(f.read())
+        for j in range(0, len(numbers)):
+            number = numbers[j]
+            del_indexes = []
+            for i in range(0, len(boards)):
+                board = boards[i]
+                board.mark_number(number)
+                if board.bingo:
+                    del_indexes.append(i)
 
-            for j in range(0, len(numbers)):
-                number = numbers[j]
-                del_indexes = []
-                for i in range(0, len(boards)):
-                    board = boards[i]
-                    board.mark_number(number)
-                    if board.bingo:
-                        del_indexes.append(i)
-
-                if len(del_indexes) == len(boards):
-                    last_board = del_indexes[-1:][0]
-                    return boards[last_board].score(number)
-                elif del_indexes:
-                    if len(boards) > 1:
-                        boards = np.delete(boards, del_indexes)
-                    else:
-                        return board.score(number)
+            if len(del_indexes) == len(boards):
+                last_board = del_indexes[-1:][0]
+                return boards[last_board].score(number)
+            elif del_indexes:
+                if len(boards) > 1:
+                    boards = np.delete(boards, del_indexes)
 
     @staticmethod
     def _build_matrix(raw) -> np.array:
         rows = []
         r = raw.split('\n')
         for j in range(0, len(r)):
-            rows.append(list(map(lambda x: int(x), r[j].split())))
+            rows.append([int(x) for x in r[j].split()])
 
         return np.array(rows)
 
     @staticmethod
-    def convert_to_numbers_and_boards(data) -> tuple:
-        tmp = data.split('\n\n')
+    def _convert_to_numbers_and_boards(d) -> tuple:
+        tmp = d.split('\n\n')
 
         numbers = [int(x) for x in tmp[:1][0].split(',')]
         raw_boards = tmp[1:]
@@ -152,9 +145,11 @@ class Day4:
             matrix = Day4._build_matrix(raw_boards[i])
             boards.append(Board(matrix))
 
-        return numbers, np.array(boards)
+        return numbers, boards
 
 
 if __name__ == '__main__':
-    print('Result for the part 1: %s' % Day4.task1('data/day4.txt'))
-    print('Result for the part 2: %s' % Day4.task2('data/day4.txt'))
+    with open('data/day4.txt', 'r') as f:
+        data = f.read()
+        print('Result for the part 1: %s' % Day4.task1(data))
+        print('Result for the part 2: %s' % Day4.task2(data))

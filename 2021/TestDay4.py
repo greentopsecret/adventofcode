@@ -1,8 +1,5 @@
 import unittest
-from unittest.mock import mock_open
-from unittest.mock import patch
-from day4 import Day4 as TaskA
-from parameterized import parameterized, parameterized_class
+from day4 import Day4
 
 INPUT = """7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
 
@@ -26,23 +23,8 @@ INPUT = """7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,
 
 
 class TestDay4(unittest.TestCase):
+    def test_a_get_result(self):
+        self.assertEqual(4512, Day4.task1(INPUT))
 
-    @parameterized.expand([
-        (INPUT, 4512),
-    ])
-    def test_a_get_result(self, _input, expected_result):
-        file = 'file/path/mock'
-        with patch('builtins.open', mock_open(read_data=_input)):
-            r = TaskA.task1(file)
-
-        self.assertEqual(expected_result, r)
-
-    @parameterized.expand([
-        (INPUT, 1924),
-    ])
-    def test_b_get_result(self, _input, expected_result):
-        file = 'file/path/mock'
-        with patch('builtins.open', mock_open(read_data=_input)):
-            r = TaskA.task2(file)
-
-        self.assertEqual(expected_result, r)
+    def test_b_get_result(self):
+        self.assertEqual(1924, Day4.task2(INPUT))
