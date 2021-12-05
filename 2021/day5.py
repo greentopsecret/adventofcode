@@ -102,15 +102,13 @@ def task2(raw_data):
             continue
 
         c = tuple(int(j) for j in matches)
+
         inc_x = 1 if c[0] < c[2] else -1 if c[0] > c[2] else 0
         inc_y = 1 if c[1] < c[3] else -1 if c[1] > c[3] else 0
-        if c[0] == c[2] or c[1] == c[3]:  # line
-            _len = max(abs(c[0] - c[2]), abs(c[1] - c[3]))
-        else:  # diagonal
-            _len = abs(c[2] - c[0])
 
         x = c[0]
         y = c[1]
+        _len = max(abs(c[0] - c[2]), abs(c[1] - c[3]))
         for j in range(_len + 1):
             key = '%d-%d' % (x, y)
             _map[key] = 1 if key not in _map.keys() else _map[key] + 1

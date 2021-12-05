@@ -1,6 +1,8 @@
-from day5 import task1, task2
+import pytest
 
-DATA_M = """0,9 -> 5,9
+from day5 import (task1, task2)
+
+DATA_L = """0,9 -> 5,9
 8,0 -> 0,8
 9,4 -> 3,4
 2,2 -> 2,1
@@ -12,61 +14,36 @@ DATA_M = """0,9 -> 5,9
 5,5 -> 8,2
 """
 
-DATA_S_1 = """0,0 -> 4,4
+DATA_XS_1 = """0,0 -> 4,4
 2,0 -> 0,2 
 """
 
-
-# x.x.
-# .x..
-# x.x.
-# ...x
-
-DATA_S_2 = """4,4 -> 0,0 
+DATA_XS_2 = """4,4 -> 0,0 
 0,2 -> 2,0  
 """
 
-
-# x.x.
-# .x..
-# x.x.
-# ...x
-
-DATA_S_3 = """4,4 -> 0,0 
+DATA_S = """4,4 -> 0,0 
 0,2 -> 2,0  
 3,0 -> 0,0  
 """
 
-
-# x.x.
-# .x..
-# x.x.
-# ...x
-
-DATA_S_4 = """4,4 -> 0,0 
+DATA_M = """4,4 -> 0,0 
 0,2 -> 2,0  
 2,0 -> 0,0  
 1,1 -> 0,2  
 """
 
 
-# XxX.
-# .X..
-# X.x.
-# ...x
-
 def test_task1():
-    assert 5 == task1(DATA_M)
+    assert 5 == task1(DATA_L)
 
 
-# @pytest.mark.parametrize('data, expected_result', (
-#         (DATA_SMALL, 1)
-#         (DATA, 12)
-# ))
-# def test_task2(data, expected_result):
-def test_task2():
-    assert 1 == task2(DATA_S_1)
-    assert 1 == task2(DATA_S_2)
-    assert 3 == task2(DATA_S_3)
-    assert 4 == task2(DATA_S_4)
-    assert 12 == task2(DATA_M)
+@pytest.mark.parametrize('data, expected_result', (
+        (DATA_XS_1, 1),
+        (DATA_XS_2, 1),
+        (DATA_S, 3),
+        (DATA_M, 4),
+        (DATA_L, 12),
+))
+def test_task2(data, expected_result):
+    assert expected_result == task2(data)
