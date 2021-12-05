@@ -1,3 +1,5 @@
+from typing import List
+
 import numpy as np
 
 """
@@ -105,24 +107,21 @@ class Day4:
 
     @staticmethod
     def task2(d):
-        boards: np.array[Board]
-        numbers, boards = Day4._convert_to_numbers_and_boards(d)
+        queue: list[Board]
+        numbers, queue = Day4._convert_to_numbers_and_boards(d)
 
         for j in range(0, len(numbers)):
             number = numbers[j]
-            del_indexes = []
-            for i in range(0, len(boards)):
-                board = boards[i]
+            _len = len(queue)
+            while _len > 0:
+                board, *queue = queue  # pop first board
                 board.mark_number(number)
                 if board.bingo:
-                    del_indexes.append(i)
-
-            if len(del_indexes) == len(boards):
-                last_board = del_indexes[-1:][0]
-                return boards[last_board].score(number)
-            elif del_indexes:
-                if len(boards) > 1:
-                    boards = np.delete(boards, del_indexes)
+                    if len(queue) == 0:
+                        return board.score(number)
+                else:
+                    queue.append(board)  # add to the end of queue
+                _len -= 1
 
     @staticmethod
     def _build_matrix(raw) -> np.array:
@@ -137,10 +136,10 @@ class Day4:
     def _convert_to_numbers_and_boards(d) -> tuple:
         tmp = d.split('\n\n')
 
-        numbers = [int(x) for x in tmp[:1][0].split(',')]
+        numbers: list[int] = [int(x) for x in tmp[:1][0].split(',')]
         raw_boards = tmp[1:]
 
-        boards = []
+        boards: list[Board] = []
         for i in range(0, len(raw_boards)):
             matrix = Day4._build_matrix(raw_boards[i])
             boards.append(Board(matrix))
