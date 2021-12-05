@@ -1,23 +1,22 @@
 import unittest
-from unittest.mock import mock_open
-from unittest.mock import patch
-from dayXXXXyyyy_template import DayXXXXYYYY as TaskYYYY
-from day3b import Day3B as TaskB
+from day5 import task1, task2
+
+INPUT = """0,9 -> 5,9
+8,0 -> 0,8
+9,4 -> 3,4
+2,2 -> 2,1
+7,0 -> 7,4
+6,4 -> 2,0
+0,9 -> 2,9
+3,4 -> 1,4
+0,0 -> 8,8
+5,5 -> 8,2
+"""
 
 
-class TestDay4(unittest.TestCase):
-    def test_a_get_result(self):
-        d = """"""
-        file = 'file/path/mock'
-        with patch('builtins.open', mock_open(read_data=d)):
-            r = TaskYYYY.task1(file)
+class TestDay5(unittest.TestCase):
+    def test_task1(self):
+        self.assertEqual(5, task1(INPUT))
 
-        self.assertEqual('ZZZZ', r)
-
-    # def test_b_get_result(self):
-    #     d = """"""
-    #     file = 'file/path/mock'
-    #     with patch('builtins.open', mock_open(read_data=d)):
-    #         r = TaskYYYY.get_result(file)
-    #
-    #     self.assertEqual('ZZZZ', r)
+    # def test_task2(self):
+    #     self.assertEqual(5, task2(INPUT))
