@@ -1,4 +1,5 @@
 import re
+from collections import defaultdict
 
 """
 --- Day 5: Hydrothermal Venture ---
@@ -65,55 +66,42 @@ Consider all of the lines. At how many points do at least two lines overlap?
 """
 
 
-def task1(raw_data):
+def parse_numbers(line):
+    return tuple(int(j) for j in re.findall(r'(\d+)', line))
+
+
+def convert_to_points(numbers) -> tuple:
+    return (numbers[0], numbers[1]), (numbers[2], numbers[3])
+
+
+def get_points(p1, p2):
+    x = p1[0]
+    y = p1[1]
+    while x != p2[0] or y != p2[1]:
+        yield {0: x, 1: y}
+        x += 1 if p1[0] < p2[0] else -1 if p1[0] > p2[0] else 0
+        y += 1 if p1[1] < p2[1] else -1 if p1[1] > p2[1] else 0
+
+    yield p2
+
+
+def task(raw_data, diagonal=True):
     raw_lines = raw_data.split('\n')
-    _map = {}
+    _map = defaultdict(int)
     for i in range(len(raw_lines)):
-        matches = re.findall(r'(\d+)', raw_lines[i])
-        if len(matches) != 4:
+        numbers = parse_numbers(raw_lines[i])
+        if len(numbers) != 4:
             continue
 
-        c = tuple(int(j) for j in matches)
+        p1, p2 = convert_to_points(numbers)
 
-        if c[0] != c[2] and c[1] != c[3]:  # filter out everything that is not horizontal or vertical line
-            continue
+        if not diagonal:
+            # filter out not horizontal or vertical line
+            if p1[0] != p2[0] and p1[1] != p2[1]:
+                continue
 
-        inc_x = 1 if c[0] < c[2] else -1 if c[0] > c[2] else 0
-        inc_y = 1 if c[1] < c[3] else -1 if c[1] > c[3] else 0
-
-        x = c[0]
-        y = c[1]
-        _len = max(abs(c[0] - c[2]), abs(c[1] - c[3]))
-        for j in range(_len + 1):
-            key = '%d-%d' % (x, y)
-            _map[key] = 1 if key not in _map.keys() else _map[key] + 1
-            x += inc_x
-            y += inc_y
-
-    return len([v for v in _map.values() if v > 1])
-
-
-def task2(raw_data):
-    raw_lines = raw_data.split('\n')
-    _map = {}
-    for i in range(len(raw_lines)):
-        matches = re.findall(r'(\d+)', raw_lines[i])
-        if len(matches) != 4:
-            continue
-
-        c = tuple(int(j) for j in matches)
-
-        inc_x = 1 if c[0] < c[2] else -1 if c[0] > c[2] else 0
-        inc_y = 1 if c[1] < c[3] else -1 if c[1] > c[3] else 0
-
-        x = c[0]
-        y = c[1]
-        _len = max(abs(c[0] - c[2]), abs(c[1] - c[3]))
-        for j in range(_len + 1):
-            key = '%d-%d' % (x, y)
-            _map[key] = 1 if key not in _map.keys() else _map[key] + 1
-            x += inc_x
-            y += inc_y
+        for p in get_points(p1, p2):
+            _map[p] += 1
 
     return len([v for v in _map.values() if v > 1])
 
@@ -121,5 +109,5 @@ def task2(raw_data):
 if __name__ == '__main__':
     with open('data/day5.txt', 'r') as f:
         data = f.read()
-        print('Result for the part 1: %s' % task1(data))
-        print('Result for the part 2: %s' % task2(data))
+        print('Result for the part 1: %s' % task(data, diagonal=False))
+        print('Result for the part 2: %s' % task(data, diagonal=True))

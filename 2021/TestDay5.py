@@ -1,6 +1,6 @@
 import pytest
 
-from day5 import (task1, task2)
+from day5 import task
 
 DATA_L = """0,9 -> 5,9
 8,0 -> 0,8
@@ -35,7 +35,7 @@ DATA_M = """4,4 -> 0,0
 
 
 def test_task1():
-    assert 5 == task1(DATA_L)
+    assert 5 == task(DATA_L, diagonal=False)
 
 
 @pytest.mark.parametrize('data, expected_result', (
@@ -46,4 +46,4 @@ def test_task1():
         (DATA_L, 12),
 ))
 def test_task2(data, expected_result):
-    assert expected_result == task2(data)
+    assert expected_result == task(data, diagonal=True)
