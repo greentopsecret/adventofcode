@@ -78,7 +78,7 @@ def get_points(p1, p2):
     x = p1[0]
     y = p1[1]
     while x != p2[0] or y != p2[1]:
-        yield {0: x, 1: y}
+        yield x, y
         x += 1 if p1[0] < p2[0] else -1 if p1[0] > p2[0] else 0
         y += 1 if p1[1] < p2[1] else -1 if p1[1] > p2[1] else 0
 
@@ -86,10 +86,9 @@ def get_points(p1, p2):
 
 
 def task(raw_data, diagonal=True):
-    raw_lines = raw_data.split('\n')
     _map = defaultdict(int)
-    for i in range(len(raw_lines)):
-        numbers = parse_numbers(raw_lines[i])
+    for line in raw_data.split('\n'):
+        numbers = parse_numbers(line)
         if len(numbers) != 4:
             continue
 
