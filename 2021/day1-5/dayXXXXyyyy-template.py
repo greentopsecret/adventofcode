@@ -50,5 +50,6 @@ def task2(data):
 
 if __name__ == '__main__':
     with open('data/dayXXX.txt', 'r') as f:
-        print('Result for the part 1: %s' % task1(f.read()))
-        print('Result for the part 2: %s' % task2(f.read()))
+        _data = f.read()
+        print('Result for the part 1: %s' % task1(_data))
+        print('Result for the part 2: %s' % task2(_data))
