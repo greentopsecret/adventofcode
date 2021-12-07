@@ -61,16 +61,25 @@ How many lanternfish would there be after 256 days?
 from collections import defaultdict
 
 
+def task(data: str, days: int) -> int:
+    data = parse(data)
+    frequencies = get_frequencies(data)
+    for _ in range(0, days):
+        frequencies = update_frequencies(frequencies)
+
+    return sum(frequencies.values())
+
+
+def parse(data: str):
+    return (int(x) for x in data.split(','))
+
+
 def get_frequencies(data) -> dict:
     frequencies = defaultdict(int)
     for number in data:
         frequencies[number] += 1
 
     return frequencies
-
-
-def parse(data: str):
-    return (int(x) for x in data.split(','))
 
 
 def update_frequencies(frequencies: dict):
@@ -83,15 +92,6 @@ def update_frequencies(frequencies: dict):
             updated[i - 1] += frequencies[i]
 
     return updated
-
-
-def task(data: str, days: int) -> int:
-    data = parse(data)
-    frequencies = get_frequencies(data)
-    for _ in range(0, days):
-        frequencies = update_frequencies(frequencies)
-
-    return sum(frequencies.values())
 
 
 if __name__ == '__main__':
