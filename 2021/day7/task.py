@@ -54,8 +54,6 @@ This costs a total of 168 fuel. This is the new cheapest possible outcome; the o
 
 Determine the horizontal position that the crabs can align to using the least fuel possible so they can make you an escape route! How much fuel must they spend to align to that position?
 """
-
-import numpy as np
 import math
 
 TRIANGULAR_NUMBERS = {}
@@ -71,12 +69,9 @@ def task2(data: str) -> int:
 
 def task(data: str, callback: callable) -> int:
     data = parse(data)
-    data = np.array(data)
-    _min = min(data)
-    _max = max(data)
     min_fuel = math.inf
 
-    for n1 in range(_min, _max):
+    for n1 in range(min(data), max(data)):
         fuel = 0
         for _, n2 in enumerate(data):
             fuel += callback(n2, n1)
@@ -85,18 +80,14 @@ def task(data: str, callback: callable) -> int:
     return min_fuel
 
 
-def parse(data: str) -> list[int]:
+def parse(data: str) -> list:
     return list(int(x) for x in data.split(','))
 
 
 def triangular_number(n: int) -> int:
     if n not in TRIANGULAR_NUMBERS.keys():
-        i = 1
-        tn = 0
-        while i <= n:
-            tn += i
-            i += 1
-        TRIANGULAR_NUMBERS[n] = tn
+        # TRIANGULAR_NUMBERS[n] = n + (triangular_number(n - 1) if n > 1 else 0) # more space consumed
+        TRIANGULAR_NUMBERS[n] = sum(list(range(1, n + 1)))
 
     return TRIANGULAR_NUMBERS[n]
 
